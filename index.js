@@ -54,6 +54,25 @@ server.get("/api/users/:id", (req, res) => {
     });
 });
 
+server.delete("/api/users/:id", (req, res) => {
+  const id = req.params.id;
+  db.remove(id)
+    .then(user => {
+      if (user) {
+        res.status(201).json({ message: "User removed" });
+      } else {
+        res.status(404)({
+          message: "The user with the specified ID does not exist."
+        });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ message: "The user could not be removed." });
+    });
+});
+
+server.put("/api/users/:id", (req, res) => {});
+
 const port = process.env.port || 7000;
 
 server.listen(port, console.log(`Listening on port ${port}`));
